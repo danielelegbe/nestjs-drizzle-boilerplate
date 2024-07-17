@@ -18,9 +18,9 @@ async function bootstrap() {
   app.useLogger(logger);
 
   const configService = app.get(ConfigService);
-  const PORT = configService.get('PORT');
+  const PORT = configService.get<string>('PORT') as string;
 
-  await app.listen(PORT);
+  await app.listen(PORT, '0.0.0.0');
 
   logger.log(`Server is running on port ${PORT}`);
 }
