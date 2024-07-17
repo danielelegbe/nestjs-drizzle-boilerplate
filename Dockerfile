@@ -6,25 +6,20 @@ RUN corepack enable
 COPY . /app
 WORKDIR /app
 
-FROM base AS prod-deps
-RUN --mount=type=cache,id=pnpm,target=/pnpm/store pnpm install --prod --frozen-lockfile
 
 
 
-FROM base AS build
+FROM base AS install
 RUN --mount=type=cache,id=pnpm,target=/pnpm/store pnpm install --frozen-lockfile
-RUN pnpm run prisma:generate
-RUN pnpm run build
 
 FROM base
-COPY --from=prod-deps /app/node_modules /app/node_modules
-COPY --from=build /app/dist /app/dist
+COPY --from=install /app/node_modules /app/node_modules
 
-EXPOSE 3000
 
 ARG NODE_ENV
 
 RUN chmod +x /app/scripts/start.sh
+
 
 CMD ["scripts/start.sh"]
 

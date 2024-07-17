@@ -14,7 +14,7 @@ services:
     image: nestjs-kysely
     build:
       context: .
-      dockerfile: Dockerfile.development
+      dockerfile: Dockerfile
     container_name: nestjs-kysely
     ports:
       - "3000:3000"
