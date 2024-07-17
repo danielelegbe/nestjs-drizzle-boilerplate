@@ -8,6 +8,8 @@ services:
       POSTGRES_PASSWORD: mypassword
       POSTGRES_DB: mydb
    
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
 
   nestjs-kysely:
     image: nestjs-kysely
@@ -15,12 +17,16 @@ services:
       context: .
       dockerfile: Dockerfile.production
     container_name: nestjs-kysely
+    environment:
+      - DATABASE_URL=${DATABASE_URL}
+      - PORT=${PORT}
+      - NODE_ENV=${NODE_ENV}
+      - DIRECT_URL=${DIRECT_URL}
+
     ports:
-      - "3000:3000"
+      - '${PORT}:${PORT}'
     depends_on:
       - postgres
-    env_file:
-      - .env
 
       
 
