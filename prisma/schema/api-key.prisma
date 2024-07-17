@@ -1,9 +1,8 @@
-model Post {
+model ApiKey {
     id        Int      @id @default(autoincrement())
-    title     String
-    body      String
+    key       String   @unique
     createdAt DateTime @default(now())
     updatedAt DateTime @default(now()) @updatedAt
 
-    @@map("posts")
+    @@map("api_keys")
 }
