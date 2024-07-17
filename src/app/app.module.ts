@@ -1,10 +1,10 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { LoggerModule } from 'nestjs-pino';
-import { ConfigSchema } from './config/config.schema';
-import { KyselyModule } from './database/database.module';
-import { PostsModule } from './posts/posts.module';
-import { HealthCheckModule } from './health-check/health-check.module';
+import { AppController } from 'src/app/app.controller';
+import { ConfigSchema } from 'src/config/config.schema';
+import { KyselyModule } from 'src/database/database.module';
+import { PostsModule } from 'src/posts/posts.module';
 
 @Module({
   imports: [
@@ -17,7 +17,7 @@ import { HealthCheckModule } from './health-check/health-check.module';
     LoggerModule.forRoot(),
     KyselyModule,
     PostsModule,
-    HealthCheckModule,
   ],
+  controllers: [AppController],
 })
 export class AppModule {}
