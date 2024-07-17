@@ -18,9 +18,11 @@ async function bootstrap() {
   app.useLogger(logger);
 
   const configService = app.get(ConfigService);
-  const PORT = configService.get('PORT') as string;
+  const PORT = configService.get('PORT');
 
-  await app.listen(PORT, '0.0.0.0');
+  const NODE_ENV = configService.get('NODE_ENV');
+
+  await app.listen(PORT, NODE_ENV === 'development' ? '0.0.0.0' : 'localhost');
 
   logger.log(`Server is running on port ${PORT}`);
 }
