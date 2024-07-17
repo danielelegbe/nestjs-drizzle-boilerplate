@@ -7,14 +7,13 @@ services:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: mypassword
       POSTGRES_DB: mydb
-    ports:
-      - "5432:5432"
+   
 
   nestjs-kysely:
     image: nestjs-kysely
     build:
       context: .
-      dockerfile: Dockerfile.development
+      dockerfile: Dockerfile
     container_name: nestjs-kysely
     ports:
       - "3000:3000"
@@ -25,9 +24,6 @@ services:
     env_file:
       - .env
 
-    environment:
-      - NODE_ENV=development
-      - PORT=3000
       
 
 volumes:
