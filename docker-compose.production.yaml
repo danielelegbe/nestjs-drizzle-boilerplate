@@ -19,8 +19,6 @@ services:
       - "3000:3000"
     depends_on:
       - postgres
-    volumes:
-    - ./src:/app/src
     env_file:
       - .env
 
