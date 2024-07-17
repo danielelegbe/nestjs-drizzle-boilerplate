@@ -8,7 +8,7 @@ generator kysely {
 
   // Optionally provide a destination directory for the generated file
   // and a filename of your choice
-  output       = "../src/kysely-prisma"
+  output       = "../src/database"
   fileName     = "database.types.ts"
   // Optionally generate runtime enums to a separate file
   enumFileName = "database.enums.ts"
@@ -16,7 +16,7 @@ generator kysely {
 
 generator zod {
   provider         = "zod-prisma-types"
-  output           = "../src/kysely-prisma/zod-schema"
+  output           = "../src/database/zod-schema"
   useMultipleFiles = true
 }
 
