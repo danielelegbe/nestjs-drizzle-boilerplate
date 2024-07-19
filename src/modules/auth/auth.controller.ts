@@ -1,13 +1,4 @@
-import {
-  Body,
-  Controller,
-  Get,
-  Logger,
-  Post,
-  Query,
-  UseFilters,
-  UsePipes,
-} from '@nestjs/common';
+import { Body, Controller, Post, UseFilters, UsePipes } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import {
   ApiKeyCreateInput,

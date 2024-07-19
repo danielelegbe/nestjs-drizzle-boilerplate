@@ -1,13 +1,10 @@
-import { Injectable, Logger } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { AuthRepository } from './auth.repository';
 import * as crypto from 'node:crypto';
-import * as bcrypt from 'bcrypt';
 import { apiKeys } from 'src/core/database/models/models';
 
 @Injectable()
 export class AuthService {
-  private readonly logger = new Logger(AuthService.name);
-
   constructor(private readonly authRepository: AuthRepository) {}
 
   async create(userEmail: string) {
