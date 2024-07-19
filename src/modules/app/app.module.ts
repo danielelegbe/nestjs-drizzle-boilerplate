@@ -1,10 +1,10 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
-import { LoggerModule } from 'nestjs-pino';
-import { AppController } from 'src/app/app.controller';
+import { AppController } from 'src/modules/app/app.controller';
 import { ConfigSchema } from 'src/config/config.schema';
-import { KyselyModule } from 'src/database/database.module';
-import { PostsModule } from 'src/posts/posts.module';
+import { DatabaseModule } from 'src/core/database/database.module';
+import { PostsModule } from 'src/modules/posts/posts.module';
+import { AuthModule } from 'src/modules/auth/auth.module';
 
 @Module({
   imports: [
@@ -14,9 +14,9 @@ import { PostsModule } from 'src/posts/posts.module';
         return ConfigSchema.parse(config);
       },
     }),
-    LoggerModule.forRoot(),
-    KyselyModule,
+    DatabaseModule,
     PostsModule,
+    AuthModule,
   ],
   controllers: [AppController],
 })

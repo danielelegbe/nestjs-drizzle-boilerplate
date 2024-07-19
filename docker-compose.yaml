@@ -22,12 +22,11 @@ services:
       - postgres
     volumes:
     - ./src:/app/src
-    env_file:
-      - .env
 
     environment:
       - NODE_ENV=development
       - PORT=3000
+      - DATABASE_URL=${DOCKER_DATABASE_URL}
       
 
 volumes:

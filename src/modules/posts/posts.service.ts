@@ -1,18 +1,15 @@
 import { Injectable, Logger } from '@nestjs/common';
-import {
-  PostCreateInputSchema,
-  PostUpdateInputSchema,
-} from 'src/database/zod-schema';
 import { z } from 'zod';
 import { PostsRepository } from './posts.repository';
+import { PostCreateInput, PostUpdateInputSchema } from './dtos/posts.dto';
 
 @Injectable()
 export class PostsService {
   private readonly logger = new Logger(PostsService.name);
   constructor(private postsRepository: PostsRepository) {}
 
-  create(post: z.infer<typeof PostCreateInputSchema>) {
-    return this.postsRepository.create(post);
+  create(post: PostCreateInput) {
+    return this.postsRepository.createOne(post);
   }
 
   async findAll() {
@@ -20,11 +17,11 @@ export class PostsService {
   }
 
   findOne(id: number) {
-    return this.postsRepository.findOne(id);
+    return this.postsRepository.findOneByIdOrThrow(id);
   }
 
   update(id: number, updatePostDto: z.infer<typeof PostUpdateInputSchema>) {
-    return this.postsRepository.update(id, updatePostDto);
+    return this.postsRepository.updateOneById(id, updatePostDto);
   }
 
   remove(id: number) {

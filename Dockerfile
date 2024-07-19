@@ -23,7 +23,3 @@ RUN chmod +x /app/scripts/start.sh
 
 CMD ["scripts/start.sh"]
 
-
-
-
-# Set the default command to the script
