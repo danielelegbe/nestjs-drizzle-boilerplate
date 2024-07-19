@@ -7,3 +7,5 @@ export const ConfigSchema = z.object({
     .default('development'),
   DATABASE_URL: z.string(),
 });
+
+export type Config = z.infer<typeof ConfigSchema>;
