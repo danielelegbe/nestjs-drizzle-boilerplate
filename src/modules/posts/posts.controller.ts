@@ -3,21 +3,18 @@ import {
   Controller,
   Delete,
   Get,
-  NotFoundException,
   Param,
   ParseIntPipe,
   Patch,
   Post,
   UseFilters,
-  UsePipes,
-  Logger,
   UseGuards,
+  UsePipes,
 } from '@nestjs/common';
 
 import { ZodValidationPipe } from 'src/pipes/zod.pipe';
 import { PostsService } from './posts.service';
 import {
-  Post as PostModel,
   PostCreateInput,
   PostCreateInputSchema,
   PostUpdateInput,
@@ -30,13 +27,11 @@ import { AuthGuard } from 'src/modules/auth/guards/auth.guard';
 @UseGuards(AuthGuard)
 @Controller('posts')
 export class PostsController {
-  private readonly logger = new Logger('PostsController');
   constructor(private readonly postsService: PostsService) {}
 
   @Post()
   @UsePipes(new ZodValidationPipe(PostCreateInputSchema))
   create(@Body() createPostDto: PostCreateInput) {
-    this.logger.debug(createPostDto);
     return this.postsService.create(createPostDto);
   }
 
@@ -62,13 +57,5 @@ export class PostsController {
   @Delete(':id')
   async remove(@Param('id', ParseIntPipe) id: number) {
     return this.postsService.remove(id);
-  }
-
-  private handleMissingPost(post: Partial<PostModel> | undefined, id: string) {
-    if (!post) {
-      throw new NotFoundException(`Post with id ${id} not found`);
-    }
-
-    return post;
   }
 }

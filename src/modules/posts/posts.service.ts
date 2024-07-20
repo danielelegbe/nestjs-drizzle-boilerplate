@@ -1,19 +1,32 @@
-import { Injectable, Logger } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 import { z } from 'zod';
 import { PostsRepository } from './posts.repository';
-import { PostCreateInput, PostUpdateInputSchema } from './dtos/posts.dto';
+import { Post, PostCreateInput, PostUpdateInputSchema } from './dtos/posts.dto';
+import { CACHE_MANAGER, Cache } from '@nestjs/cache-manager';
 
 @Injectable()
 export class PostsService {
-  private readonly logger = new Logger(PostsService.name);
-  constructor(private postsRepository: PostsRepository) {}
+  constructor(
+    private postsRepository: PostsRepository,
+    @Inject(CACHE_MANAGER) private readonly cacheManger: Cache,
+  ) {}
 
   create(post: PostCreateInput) {
     return this.postsRepository.createOne(post);
   }
 
   async findAll() {
-    return this.postsRepository.findAll();
+    const cached = await this.cacheManger.get<Post[]>('posts');
+
+    if (cached) {
+      return cached;
+    }
+
+    const posts = await this.postsRepository.findAll();
+
+    await this.cacheManger.set('posts', posts, 10);
+
+    return posts;
   }
 
   findOne(id: number) {

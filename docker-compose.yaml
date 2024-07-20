@@ -2,24 +2,35 @@ version: '3.8'
 services:
   postgres:
     image: postgres:latest
-    container_name: nestjs-sst-postgres
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: mypassword
       POSTGRES_DB: mydb
     ports:
       - "5432:5432"
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
 
-  nestjs-kysely:
-    image: nestjs-kysely
+  redis-stack:
+    image: redis/redis-stack:latest
+    ports:
+      - "6379:6379"
+      - "8001:8001"
+    volumes:
+      - ./redis-data:/data
+
+
+
+  nestjs-drizzle-boilerplate:
+    image: nestjs-drizzle-boilerplate
     build:
       context: .
       dockerfile: Dockerfile
-    container_name: nestjs-kysely
     ports:
       - "3000:3000"
     depends_on:
       - postgres
+      - redis-stack
     volumes:
     - ./src:/app/src
 
@@ -27,7 +38,9 @@ services:
       - NODE_ENV=development
       - PORT=3000
       - DATABASE_URL=${DOCKER_DATABASE_URL}
+      - REDIS_URL=${REDIS_URL}
       
 
 volumes:
   postgres-data:
+  redis-data:

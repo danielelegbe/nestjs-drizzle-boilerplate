@@ -22,7 +22,7 @@ export abstract class AbstractRepository<T extends Table> {
     return result ?? null;
   }
 
-  findAll(fields?: SelectedFields) {
+  findAll(fields?: SelectedFields): Promise<Partial<T>['$inferSelect'][]> {
     return this.db
       .select(fields as SelectedFields)
       .from(this.tableName)

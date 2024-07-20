@@ -17,8 +17,6 @@ export class AuthGuard implements CanActivate {
 
     const authHeader = request.headers.authorization;
 
-    this.logger.debug('Checking API key', authHeader);
-
     if (!authHeader) {
       throw new UnauthorizedException('Please provide an authorization header');
     }
