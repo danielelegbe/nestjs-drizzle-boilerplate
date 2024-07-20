@@ -9,6 +9,7 @@ import {
   Post,
   UseFilters,
   UseGuards,
+  UseInterceptors,
   UsePipes,
 } from '@nestjs/common';
 
@@ -22,6 +23,7 @@ import {
 } from './dtos/posts.dto';
 import { HttpExceptionFilter } from 'src/core/filters/generic.filter';
 import { AuthGuard } from 'src/modules/auth/guards/auth.guard';
+import { CacheInterceptor } from '@nestjs/cache-manager';
 
 @UseFilters(HttpExceptionFilter)
 @UseGuards(AuthGuard)
@@ -36,11 +38,13 @@ export class PostsController {
   }
 
   @Get()
+  @UseInterceptors(CacheInterceptor)
   async findAll() {
     return this.postsService.findAll();
   }
 
   @Get(':id')
+  @UseInterceptors(CacheInterceptor)
   async findOne(@Param('id', ParseIntPipe) id: number) {
     return await this.postsService.findOne(id);
   }

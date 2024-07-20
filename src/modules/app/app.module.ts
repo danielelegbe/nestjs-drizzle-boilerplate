@@ -27,6 +27,7 @@ import { CacheStore } from '@nestjs/common/cache';
 
         const store = await redisStore({
           url: redisUrl,
+          ttl: 15,
         });
 
         return {

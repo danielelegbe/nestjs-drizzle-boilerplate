@@ -1,14 +1,14 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { z } from 'zod';
 import { PostsRepository } from './posts.repository';
-import { Post, PostCreateInput, PostUpdateInputSchema } from './dtos/posts.dto';
-import { CACHE_MANAGER, Cache } from '@nestjs/cache-manager';
+import { PostCreateInput, PostUpdateInputSchema } from './dtos/posts.dto';
+import { CACHE_MANAGER, CacheStore } from '@nestjs/cache-manager';
 
 @Injectable()
 export class PostsService {
   constructor(
     private postsRepository: PostsRepository,
-    @Inject(CACHE_MANAGER) private readonly cacheManger: Cache,
+    @Inject(CACHE_MANAGER) private readonly cacheManger: CacheStore,
   ) {}
 
   create(post: PostCreateInput) {
@@ -16,17 +16,7 @@ export class PostsService {
   }
 
   async findAll() {
-    const cached = await this.cacheManger.get<Post[]>('posts');
-
-    if (cached) {
-      return cached;
-    }
-
-    const posts = await this.postsRepository.findAll();
-
-    await this.cacheManger.set('posts', posts, 10);
-
-    return posts;
+    return await this.postsRepository.findAll();
   }
 
   findOne(id: number) {
